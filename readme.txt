@@ -5,43 +5,15 @@
 
 Поля класса:
 
-	1. двоичные числа (между ними  будет происходить умножение):
-		string A1;
-		string B1;
-
-		string A2;
-		string B2;
-
-		string A3;
-		string B3;
+	1. Вектор с двоичными числами (между ними  будет происходить умножение):
+		vector<vector<string>> pairs;
 		
-	2. Переменные, которые хранят промежуточные значения:
-		string multi_calc1 = "00000000";
-		string multi_result1 = "00000000";
-		string sum_result1 = "00000000";
-
-		string multi_calc2 = "00000000";
-		string multi_result2 = "00000000";
-		string sum_result2 = "00000000";
-
-		string multi_calc3 = "00000000";
-		string multi_result3 = "00000000";
-		string sum_result3 = "00000000";
+	2. Вектор, который хранит промежуточные значения:
+		vector<vector<string>> calculation;
 		
-	3. Переменные типа bool, нужные для проверки. В зависимости от их значения будут выполнятся разные
-	процессорные элементы (методы).
-
-		bool multi_check1 = false;
-		bool sum_check1 = false;
-		bool shift_check1 = true;
-
-		bool multi_check2 = false;
-		bool sum_check2 = false;
-		bool shift_check2 = true;
-
-		bool multi_check3 = false;
-		bool sum_check3 = false;
-		bool shift_check3 = true;
+	3. Вектор, нужный для проверки. В зависимости от их значения будут выполнятся разные
+	процессорные элементы.
+		vector<vector<bool>> check;
 		
 	4. Вектор vector <vector <bool>> line, необходимый для последующего вывода информации в консоль.
 
@@ -51,7 +23,7 @@
 		В методе происходит умножение разряда curr_num на число А. В процессе вычисления все записывается
 		в multi_calc, а  конечный результат - в multi_result.
 		
-	2. sum(string &sum_result, string &multi_result)
+	2. sum(string &sum_result, string &multi_result) 
 		Метод находит частичную сумму. На вход приходит sum_result, куда запишется ответ, 
 		и multi_result, который мы получаем из метода multiplication.
 		
@@ -59,8 +31,9 @@
 		Метод сдвига.
 		
 	4. find_result()
-		Метод, который по идее и является конвейером. Тут вызываются процессорные элементы (методы, что описаны
-		выше). Внутри метода есть вектор column, необходимый для последующего вывода информации в консоль.
+		Метод, который по идее и является конвейером. Он рахделен на 24 этапа (произведение, сумма и
+		сдвиг для каждого разряда чисел).
+		Внутри метода есть вектор column, необходимый для последующего вывода информации в консоль.
 		
 	5. print()
 		Метод, выводящий всю нужную информацию в консоль.

@@ -8,38 +8,11 @@ using namespace std;
 
 class algorithm {
 private:
-	string A1;
-	string B1;
-
-	string A2;
-	string B2;
-
-	string A3;
-	string B3;
+	vector<vector<string>> pairs;
 	
-	string multi_calc1 = "00000000";
-	string multi_result1 = "00000000";
-	string sum_result1 = "00000000";
+	vector<vector<string>> calculation;
 
-	string multi_calc2 = "00000000";
-	string multi_result2 = "00000000";
-	string sum_result2 = "00000000";
-
-	string multi_calc3 = "00000000";
-	string multi_result3 = "00000000";
-	string sum_result3 = "00000000";
-
-	bool multi_check1 = false;
-	bool sum_check1 = false;
-	bool shift_check1 = true;
-
-	bool multi_check2 = false;
-	bool sum_check2 = false;
-	bool shift_check2 = true;
-
-	bool multi_check3 = false;
-	bool sum_check3 = false;
-	bool shift_check3 = true;
+	vector<vector<bool>> check;
 
 	vector <vector <bool>> line;
 
@@ -102,111 +75,358 @@ private:
 
 	//**Метод нахождения произведения А на В**//
 	void find_result() {
-		int i = B1.length() - 1;
-		int j = B2.length() - 1;
-		int y = B3.length() - 1;
+		vector<int> lenght(pairs.size(), 7);
+		vector<bool> n_check(pairs.size(), true);
+		vector<bool> s(3, true);
+		vector<vector<bool>> s_chesk(8, s);
 		int t_num = 1;
-		for (int k = 0; k < 26; k++) {
-			bool S1 = true;
-			bool S2 = true;
-			bool S3 = true;
-			bool N1 = true;
-			bool N2 = true;
-			bool N3 = true;
+		for (int k = 0; k < 23 + pairs.size(); k++) {
+			for (int j = 0; j < 8; j++) {
+				s_chesk[j][0] = true;
+				s_chesk[j][1] = true;
+				s_chesk[j][2] = true;
+			}
+			for (int j = 0; j < pairs.size(); j++) n_check[j] = true;
 			cout << "---Такт №" << t_num << "---" << endl;
 			t_num++;
-			vector<bool> column(3, false);
-			if (multi_check1 == false && sum_check1 == false && shift_check1 == true && S1 == true && i != -1 && N1 == true) {
-				multiplication(B1[i], multi_calc1, multi_result1, A1);
-				column[0] = true;
-				multi_check1 = true;
-				sum_check1 = true;
-				shift_check1 = false;
-				cout << "Умножение. Результат: " << multi_result1 << endl;
-				cout << endl;
-				S1 = false;
-				N1 = false;
-			} 
-			if (multi_check2 == false && sum_check2 == false && shift_check2 == true && S1 == true && j != -1 && N2 == true) {
-				multiplication(B2[j], multi_calc2, multi_result2, A2);
-				column[0] = true;
-				multi_check2 = true;
-				sum_check2 = true;
-				shift_check2 = false;
-				cout << "Умножение. Результат: " << multi_result2 << endl;
-				cout << endl;
-				S1 = false;
-				N2 = false;
+			vector<bool> column(24, false);
+			// Произведение для 1 разряда
+			for (int j = 0; j < pairs.size(); j++) { 
+				if (check[j][0] == false && check[j][1] == false && check[j][2] == true && s_chesk[7][0] == true && lenght[j] == 7 && n_check[j] == true) {
+					multiplication(pairs[j][1][lenght[j]], calculation[j][0], calculation[j][1], pairs[j][0]);
+					column[0] = true;
+					check[j][0] = true;
+					check[j][1] = true;
+					check[j][2] = false;
+					cout << "Умножение. Результат: " << calculation[j][1] << endl;
+					cout << endl;
+					s_chesk[7][0] = false;
+					n_check[j] = false;
+					break;
+				}
 			}
-			if (multi_check3 == false && sum_check3 == false && shift_check3 == true && S1 == true && y != -1 && N3 == true) {
-				multiplication(B3[y], multi_calc3, multi_result3, A3);
-				column[0] = true;
-				multi_check3 = true;
-				sum_check3 = true;
-				shift_check3 = false;
-				cout << "Умножение. Результат: " << multi_result3 << endl;
-				cout << endl;
-				S1 = false;
-				N3 = false;
+			// Произведение для 2 разряда
+			for (int j = 0; j < pairs.size(); j++) {
+				if (check[j][0] == false && check[j][1] == false && check[j][2] == true && s_chesk[6][0] == true && lenght[j] == 6 && n_check[j] == true) {
+					multiplication(pairs[j][1][lenght[j]], calculation[j][0], calculation[j][1], pairs[j][0]);
+					column[3] = true;
+					check[j][0] = true;
+					check[j][1] = true;
+					check[j][2] = false;
+					cout << "Умножение. Результат: " << calculation[j][1] << endl;
+					cout << endl;
+					s_chesk[6][0] = false;
+					n_check[j] = false;
+					break;
+				}
+			}
+			// Произведение для 3 разряда
+			for (int j = 0; j < pairs.size(); j++) {
+				if (check[j][0] == false && check[j][1] == false && check[j][2] == true && s_chesk[5][0] == true && lenght[j] == 5 && n_check[j] == true) {
+					multiplication(pairs[j][1][lenght[j]], calculation[j][0], calculation[j][1], pairs[j][0]);
+					column[6] = true;
+					check[j][0] = true;
+					check[j][1] = true;
+					check[j][2] = false;
+					cout << "Умножение. Результат: " << calculation[j][1] << endl;
+					cout << endl;
+					s_chesk[5][0] = false;
+					n_check[j] = false;
+					break;
+				}
+			}
+			// Произведение для 4 разряда
+			for (int j = 0; j < pairs.size(); j++) {
+				if (check[j][0] == false && check[j][1] == false && check[j][2] == true && s_chesk[4][0] == true && lenght[j] == 4 && n_check[j] == true) {
+					multiplication(pairs[j][1][lenght[j]], calculation[j][0], calculation[j][1], pairs[j][0]);
+					column[9] = true;
+					check[j][0] = true;
+					check[j][1] = true;
+					check[j][2] = false;
+					cout << "Умножение. Результат: " << calculation[j][1] << endl;
+					cout << endl;
+					s_chesk[4][0] = false;
+					n_check[j] = false;
+					break;
+				}
+			}
+			// Произведение для 5 разряда
+			for (int j = 0; j < pairs.size(); j++) {
+				if (check[j][0] == false && check[j][1] == false && check[j][2] == true && s_chesk[3][0] == true && lenght[j] == 3 && n_check[j] == true) {
+					multiplication(pairs[j][1][lenght[j]], calculation[j][0], calculation[j][1], pairs[j][0]);
+					column[12] = true;
+					check[j][0] = true;
+					check[j][1] = true;
+					check[j][2] = false;
+					cout << "Умножение. Результат: " << calculation[j][1] << endl;
+					cout << endl;
+					s_chesk[3][0] = false;
+					n_check[j] = false;
+					break;
+				}
+			}
+			// Произведение для 6 разряда
+			for (int j = 0; j < pairs.size(); j++) {
+				if (check[j][0] == false && check[j][1] == false && check[j][2] == true && s_chesk[2][0] == true && lenght[j] == 2 && n_check[j] == true) {
+					multiplication(pairs[j][1][lenght[j]], calculation[j][0], calculation[j][1], pairs[j][0]);
+					column[15] = true;
+					check[j][0] = true;
+					check[j][1] = true;
+					check[j][2] = false;
+					cout << "Умножение. Результат: " << calculation[j][1] << endl;
+					cout << endl;
+					s_chesk[2][0] = false;
+					n_check[j] = false;
+					break;
+				}
+			}
+			// Произведение для 7 разряда
+			for (int j = 0; j < pairs.size(); j++) {
+				if (check[j][0] == false && check[j][1] == false && check[j][2] == true && s_chesk[1][0] == true && lenght[j] == 1 && n_check[j] == true) {
+					multiplication(pairs[j][1][lenght[j]], calculation[j][0], calculation[j][1], pairs[j][0]);
+					column[18] = true;
+					check[j][0] = true;
+					check[j][1] = true;
+					check[j][2] = false;
+					cout << "Умножение. Результат: " << calculation[j][1] << endl;
+					cout << endl;
+					s_chesk[1][0] = false;
+					n_check[j] = false;
+					break;
+				}
+			}
+			// Произведение для 8 разряда
+			for (int j = 0; j < pairs.size(); j++) {
+				if (check[j][0] == false && check[j][1] == false && check[j][2] == true && s_chesk[0][0] == true && lenght[j] == 0 && n_check[j] == true) {
+					multiplication(pairs[j][1][lenght[j]], calculation[j][0], calculation[j][1], pairs[j][0]);
+					column[21] = true;
+					check[j][0] = true;
+					check[j][1] = true;
+					check[j][2] = false;
+					cout << "Умножение. Результат: " << calculation[j][1] << endl;
+					cout << endl;
+					s_chesk[0][0] = false;
+					n_check[j] = false;
+					break;
+				}
 			}
 
-			if (multi_check1 == true && sum_check1 == true && shift_check1 == false && S2 == true && N1 == true) {
-				sum(sum_result1, multi_result1);
-				cout << "Сумма. Результат: " << sum_result1 << endl;
-				column[1] = true;
-				shift_check1 = true;
-				S2 = false;
-				N1 = false;
+			// Сумма для 1 разряда
+			for (int j = 0; j < pairs.size(); j++) {
+				if (check[j][0] == true && check[j][1] == true && check[j][2] == false && s_chesk[7][1] == true && n_check[j] == true && lenght[j] == 7) {
+					sum(calculation[j][2], calculation[j][1]);
+					cout << "Сумма. Результат: " << calculation[j][2] << endl;
+					column[1] = true;
+					check[j][2] = true;
+					s_chesk[7][1] = false;
+					n_check[j] = false;
+					break;
+				}
 			}
-			if (multi_check2 == true && sum_check2 == true && shift_check2 == false && S2 == true && N2 == true) {
-				sum(sum_result2, multi_result2);
-				cout << "Сумма. Результат: " << sum_result2 << endl;
-				column[1] = true;
-				shift_check2 = true;
-				S2 = false;
-				N2 = false;
+			// Сумма для 2 разряда
+			for (int j = 0; j < pairs.size(); j++) {
+				if (check[j][0] == true && check[j][1] == true && check[j][2] == false && s_chesk[6][1] == true && n_check[j] == true && lenght[j] == 6) {
+					sum(calculation[j][2], calculation[j][1]);
+					cout << "Сумма. Результат: " << calculation[j][2] << endl;
+					column[4] = true;
+					check[j][2] = true;
+					s_chesk[6][1] = false;
+					n_check[j] = false;
+					break;
+				}
 			}
-			if (multi_check3 == true && sum_check3 == true && shift_check3 == false && S2 == true && N3 == true) {
-				sum(sum_result3, multi_result3);
-				cout << "Сумма. Результат: " << sum_result3 << endl;
-				column[1] = true;
-				shift_check3 = true;
-				S2 = false;
-				N3 = false;
+			// Сумма для 3 разряда
+			for (int j = 0; j < pairs.size(); j++) {
+				if (check[j][0] == true && check[j][1] == true && check[j][2] == false && s_chesk[5][1] == true && n_check[j] == true && lenght[j] == 5) {
+					sum(calculation[j][2], calculation[j][1]);
+					cout << "Сумма. Результат: " << calculation[j][2] << endl;
+					column[7] = true;
+					check[j][2] = true;
+					s_chesk[5][1] = false;
+					n_check[j] = false;
+					break;
+				}
 			}
-
-			if (multi_check1 == true && sum_check1 == true && shift_check1 == true && S3 == true && N1 == true) {
-				shift(multi_calc1);
-				column[2] = true;
-				multi_check1 = false;
-				sum_check1 = false;
-				shift_check1 = true;
-				i--;
-				cout << "Произошел сдвиг" << endl;
-				S3 = false;
-				N1 = false;
+			// Сумма для 4 разряда
+			for (int j = 0; j < pairs.size(); j++) {
+				if (check[j][0] == true && check[j][1] == true && check[j][2] == false && s_chesk[4][1] == true && n_check[j] == true && lenght[j] == 4) {
+					sum(calculation[j][2], calculation[j][1]);
+					cout << "Сумма. Результат: " << calculation[j][2] << endl;
+					column[10] = true;
+					check[j][2] = true;
+					s_chesk[4][1] = false;
+					n_check[j] = false;
+					break;
+				}
 			}
-			if (multi_check2 == true && sum_check2 == true && shift_check2 == true && S3 == true && N2 == true) {
-				shift(multi_calc2);
-				column[2] = true;
-				multi_check2 = false;
-				sum_check2 = false;
-				shift_check2 = true;
-				j--;
-				cout << "Произошел сдвиг" << endl;
-				S3 = false;
-				N2 = false;
+			// Сумма для 5 разряда
+			for (int j = 0; j < pairs.size(); j++) {
+				if (check[j][0] == true && check[j][1] == true && check[j][2] == false && s_chesk[3][1] == true && n_check[j] == true && lenght[j] == 3) {
+					sum(calculation[j][2], calculation[j][1]);
+					cout << "Сумма. Результат: " << calculation[j][2] << endl;
+					column[13] = true;
+					check[j][2] = true;
+					s_chesk[3][1] = false;
+					n_check[j] = false;
+					break;
+				}
 			}
-			if (multi_check3 == true && sum_check3 == true && shift_check3 == true && S3 == true && N3 == true) {
-				shift(multi_calc3);
-				column[2] = true;
-				multi_check3 = false;
-				sum_check3 = false;
-				shift_check3 = true;
-				y--;
-				cout << "Произошел сдвиг" << endl;
-				S3 = false;
-				N3 = false;
+			// Сумма для 6 разряда
+			for (int j = 0; j < pairs.size(); j++) {
+				if (check[j][0] == true && check[j][1] == true && check[j][2] == false && s_chesk[2][1] == true && n_check[j] == true && lenght[j] == 2) {
+					sum(calculation[j][2], calculation[j][1]);
+					cout << "Сумма. Результат: " << calculation[j][2] << endl;
+					column[16] = true;
+					check[j][2] = true;
+					s_chesk[2][1] = false;
+					n_check[j] = false;
+					break;
+				}
+			}
+			// Сумма для 7 разряда
+			for (int j = 0; j < pairs.size(); j++) {
+				if (check[j][0] == true && check[j][1] == true && check[j][2] == false && s_chesk[1][1] == true && n_check[j] == true && lenght[j] == 1) {
+					sum(calculation[j][2], calculation[j][1]);
+					cout << "Сумма. Результат: " << calculation[j][2] << endl;
+					column[19] = true;
+					check[j][2] = true;
+					s_chesk[1][1] = false;
+					n_check[j] = false;
+					break;
+				}
+			}
+			// Сумма для 8 разряда
+			for (int j = 0; j < pairs.size(); j++) {
+				if (check[j][0] == true && check[j][1] == true && check[j][2] == false && s_chesk[0][1] == true && n_check[j] == true && lenght[j] == 0) {
+					sum(calculation[j][2], calculation[j][1]);
+					cout << "Сумма. Результат: " << calculation[j][2] << endl;
+					column[22] = true;
+					check[j][2] = true;
+					s_chesk[0][1] = false;
+					n_check[j] = false;
+					break;
+				}
+			}
+			
+			// Сдвиг для 1 разряда
+			for (int j = 0; j < pairs.size(); j++) {
+				if (check[j][0] == true && check[j][1] == true && check[j][2] == true && s_chesk[7][2] == true && n_check[j] == true && lenght[j] == 7) {
+					shift(calculation[j][0]);
+					column[2] = true;
+					check[j][0] = false;
+					check[j][1] = false;
+					check[j][2] = true;
+					lenght[j]--;
+					cout << "Произошел сдвиг" << endl;
+					s_chesk[7][2] = false;
+					n_check[j] = false;
+					break;
+				}
+			}
+			// Сдвиг для 2 разряда
+			for (int j = 0; j < pairs.size(); j++) {
+				if (check[j][0] == true && check[j][1] == true && check[j][2] == true && s_chesk[6][2] == true && n_check[j] == true && lenght[j] == 6) {
+					shift(calculation[j][0]);
+					column[5] = true;
+					check[j][0] = false;
+					check[j][1] = false;
+					check[j][2] = true;
+					lenght[j]--;
+					cout << "Произошел сдвиг" << endl;
+					s_chesk[6][2] = false;
+					n_check[j] = false;
+					break;
+				}
+			}
+			// Сдвиг для 3 разряда
+			for (int j = 0; j < pairs.size(); j++) {
+				if (check[j][0] == true && check[j][1] == true && check[j][2] == true && s_chesk[5][2] == true && n_check[j] == true && lenght[j] == 5) {
+					shift(calculation[j][0]);
+					column[8] = true;
+					check[j][0] = false;
+					check[j][1] = false;
+					check[j][2] = true;
+					lenght[j]--;
+					cout << "Произошел сдвиг" << endl;
+					s_chesk[5][2] = false;
+					n_check[j] = false;
+					break;
+				}
+			}
+			// Сдвиг для 4 разряда
+			for (int j = 0; j < pairs.size(); j++) {
+				if (check[j][0] == true && check[j][1] == true && check[j][2] == true && s_chesk[4][2] == true && n_check[j] == true && lenght[j] == 4) {
+					shift(calculation[j][0]);
+					column[11] = true;
+					check[j][0] = false;
+					check[j][1] = false;
+					check[j][2] = true;
+					lenght[j]--;
+					cout << "Произошел сдвиг" << endl;
+					s_chesk[4][2] = false;
+					n_check[j] = false;
+					break;
+				}
+			}
+			// Сдвиг для 5 разряда
+			for (int j = 0; j < pairs.size(); j++) {
+				if (check[j][0] == true && check[j][1] == true && check[j][2] == true && s_chesk[3][2] == true && n_check[j] == true && lenght[j] == 3) {
+					shift(calculation[j][0]);
+					column[14] = true;
+					check[j][0] = false;
+					check[j][1] = false;
+					check[j][2] = true;
+					lenght[j]--;
+					cout << "Произошел сдвиг" << endl;
+					s_chesk[3][2] = false;
+					n_check[j] = false;
+					break;
+				}
+			}
+			// Сдвиг для 6 разряда
+			for (int j = 0; j < pairs.size(); j++) {
+				if (check[j][0] == true && check[j][1] == true && check[j][2] == true && s_chesk[2][2] == true && n_check[j] == true && lenght[j] == 2) {
+					shift(calculation[j][0]);
+					column[17] = true;
+					check[j][0] = false;
+					check[j][1] = false;
+					check[j][2] = true;
+					lenght[j]--;
+					cout << "Произошел сдвиг" << endl;
+					s_chesk[2][2] = false;
+					n_check[j] = false;
+					break;
+				}
+			}
+			// Сдвиг для 7 разряда
+			for (int j = 0; j < pairs.size(); j++) {
+				if (check[j][0] == true && check[j][1] == true && check[j][2] == true && s_chesk[1][2] == true && n_check[j] == true && lenght[j] == 1) {
+					shift(calculation[j][0]);
+					column[20] = true;
+					check[j][0] = false;
+					check[j][1] = false;
+					check[j][2] = true;
+					lenght[j]--;
+					cout << "Произошел сдвиг" << endl;
+					s_chesk[1][2] = false;
+					n_check[j] = false;
+					break;
+				}
+			}
+			// Сдвиг для 8 разряда
+			for (int j = 0; j < pairs.size(); j++) {
+				if (check[j][0] == true && check[j][1] == true && check[j][2] == true && s_chesk[0][2] == true && n_check[j] == true && lenght[j] == 0) {
+					shift(calculation[j][0]);
+					column[23] = true;
+					check[j][0] = false;
+					check[j][1] = false;
+					check[j][2] = true;
+					lenght[j]--;
+					cout << "Произошел сдвиг" << endl;
+					s_chesk[0][2] = false;
+					n_check[j] = false;
+					break;
+				}
 			}
 			line.push_back(column);
 			cout << endl;
@@ -215,34 +435,29 @@ private:
 
 	//**Методы вывода информации в консоль**//
 	void print() {
-		cout << "A1 = " << A1 << endl << "B1 = " << B1 << endl << "A1*B1 = " << sum_result1 << endl << endl;
-		cout << "A2 = " << A2 << endl << "B2 = " << B2 << endl << "A2*B2 = " << sum_result2 << endl << endl;
-		cout << "A3 = " << A3 << endl << "B3 = " << B3 << endl << "A3*B3 = " << sum_result3 << endl << endl;
+		for (int i = 0; i < pairs.size(); i++) cout << "A = " << pairs[i][0] << endl << "B = " << pairs[i][1] << endl << "A*B = " << calculation[i][2] << endl << endl;
 		cout << "Конвейер:" << endl;
-		cout << "*Примечание: один столбец таблицы - 1 такт; 1 значит процесс на данном такте был вызван, 0 - не был вызван." << endl << endl << setiosflags(ios::left);
-		cout << setw(30) << "Процесс 1: умножение" << '\t';
-		for (int i = 0; i < line.size(); i++)
-			cout << line[i][0] << ' ';
-		cout << endl << "Процесс 2: частичная сумма" << '\t';
-		for (int i = 0; i < line.size(); i++)
-			cout << line[i][1] << ' ';
-		cout << setw(30) << endl << "Процесс 3: сдвиг" << '\t';
-		for (int i = 0; i < line.size(); i++)
-			cout << line[i][2] << ' ';
-		cout << endl;
+		cout << "*Примечание: один столбец таблицы - 1 этап; 1 значит этап на данном такте был выполнен, 0 - не выполнялся." << endl << endl << setiosflags(ios::left);
+		for (int j = 0; j < 23 + pairs.size(); j++){
+			cout << "Такт " << j + 1 << '\t' << "  ";
+			for (int i = 0; i < 24; i++) {
+				cout << line[j][i] << "  ";
+			}
+			cout << endl;
+		}
 	}
 
 public:
-	algorithm(string inputA1, string inputB1, string inputA2, string inputB2, string inputA3, string inputB3) {
-		A1 = inputA1;
-		B1 = inputB1;
+	algorithm(vector<vector<string>> input_pairs) {
+		pairs = input_pairs;
 
-		A2 = inputA2;
-		B2 = inputB2;
-
-		A3 = inputA3;
-		B3 = inputB3;
-
+		for (int i = 0; i < pairs.size(); i++) {
+			vector<string> temp_string(3, "00000000");
+			calculation.push_back(temp_string);
+			vector<bool> temp_bool(3, false);
+			temp_bool[2] = true;
+			check.push_back(temp_bool);
+		}
 		find_result();
 		print();
 	};
@@ -250,5 +465,34 @@ public:
 
 int main() {
 	setlocale(LC_ALL, "Russian");
-	algorithm action("10001101", "10001001", "10001100", "11101101", "10101100", "11000101");
+	vector<vector<string>> pairs;
+	vector<string> temp;
+
+	temp.push_back("10001101"); //первое число первой пары
+	temp.push_back("10001001"); //второе число первой пары
+	pairs.push_back(temp);
+	temp.clear();
+
+	temp.push_back("10001100"); //2 пара
+	temp.push_back("11101101");
+	pairs.push_back(temp);
+	temp.clear();
+
+	temp.push_back("10101100"); //3 пара
+	temp.push_back("11000101");
+	pairs.push_back(temp);
+	temp.clear();
+
+	temp.push_back("10101011"); //4 пара
+	temp.push_back("11110101");
+	pairs.push_back(temp);
+	temp.clear();
+
+	temp.push_back("10100011"); //5 пара
+	temp.push_back("11010101");
+	pairs.push_back(temp);
+	temp.clear();
+
+	algorithm action(pairs);
+	system("pause");
 }
